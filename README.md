@@ -15,7 +15,7 @@
 
 After the p2p connection is built, the server will exit. The two client will send a random int [0,100) to each other
 
-> **Note**
+> **Note**  
 > the default <ip of serrver> is my vps' ip
 
 ![explain](./explain.png)
