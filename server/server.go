@@ -12,7 +12,7 @@ var Cmd = &cobra.Command{
 	Use:   "server",
 	Short: "start a server",
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("server")
+		// log.Println("server")
 		server(cmd, args)
 	},
 }

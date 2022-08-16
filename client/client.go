@@ -4,7 +4,6 @@ import (
 	"log"
 	"net"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -14,7 +13,7 @@ var Cmd = &cobra.Command{
 	Use:   "client",
 	Short: "start a client",
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("client")
+		// log.Println("client")
 		client(cmd, args)
 	},
 }
@@ -43,7 +42,7 @@ const HAND_SHAKE_MSG = "this is a tunnel msg"
 func client(cmd *cobra.Command, args []string) {
 	srcAddr := &net.UDPAddr{
 		IP:   net.IPv4zero,
-		Port: 9527,
+		Port: 9901,
 	}
 	dstAddr := &net.UDPAddr{
 		IP:   serverIP,
@@ -63,6 +62,7 @@ func client(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatalf("error during read: %s", err)
 	}
+	log.Printf("n: %d, remoteAddr:%v\n", n, remoteAddr)
 	conn.Close()
 	anotherPeer := parseAddr(string(data[:n]))
 	log.Printf("local:%s server:%s:%d another:%s:%d\n", srcAddr, remoteAddr.IP, remoteAddr.Port, anotherPeer.IP, anotherPeer.Port)
@@ -70,14 +70,14 @@ func client(cmd *cobra.Command, args []string) {
 }
 
 func parseAddr(addr string) net.UDPAddr {
-	t := strings.Split(addr, ":")
-	port, err := strconv.Atoi(t[1])
+	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("net.SplitHostPort: %s\n", err)
 	}
+	portInt, err := strconv.Atoi(port)
 	return net.UDPAddr{
-		IP:   net.ParseIP(t[0]),
-		Port: port,
+		IP:   net.ParseIP(host),
+		Port: portInt,
 	}
 }
 
