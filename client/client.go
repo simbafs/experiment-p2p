@@ -1,7 +1,9 @@
 package client
 
 import (
+	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"strconv"
 	"time"
@@ -85,15 +87,20 @@ func bidirectionHole(srcAddr, anotherAddr *net.UDPAddr) {
 		log.Println("send handshake:", err)
 	}
 
+	// send
 	go func() {
+		r1 := rand.New(rand.NewSource(time.Now().UnixNano()))
 		for {
+			data := fmt.Sprintf("[%s]: %d", tag, r1.Intn(100))
 			time.Sleep(10 * time.Second)
-			if _, err = conn.Write([]byte("from [" + tag + "]")); err != nil {
+			log.Printf("send: %s\n", data)
+			if _, err = conn.Write([]byte(data)); err != nil {
 				log.Fatalf("send msg fail: %s", err)
 			}
 		}
 	}()
 
+	// receive
 	for {
 		data := make([]byte, 1024)
 		n, _, err := conn.ReadFromUDP(data)
