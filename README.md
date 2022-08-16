@@ -1,4 +1,5 @@
 # experiment-p2p
+# [blog](https://blog.simbafs.cc/posts/golang/p2p/)
 
 # Build/Install
 `make`
