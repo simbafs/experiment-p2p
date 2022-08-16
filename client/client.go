@@ -37,8 +37,6 @@ func init() {
 	}
 }
 
-const HAND_SHAKE_MSG = "this is a tunnel msg"
-
 func client(cmd *cobra.Command, args []string) {
 	srcAddr := &net.UDPAddr{
 		IP:   net.IPv4zero,
@@ -81,7 +79,7 @@ func parseAddr(addr string) net.UDPAddr {
 	}
 }
 
-func bidirectionHole(srcAddr *net.UDPAddr, anotherAddr *net.UDPAddr) {
+func bidirectionHole(srcAddr, anotherAddr *net.UDPAddr) {
 	conn, err := net.DialUDP("udp", srcAddr, anotherAddr)
 	if err != nil {
 		log.Println("send handshake:", err)
