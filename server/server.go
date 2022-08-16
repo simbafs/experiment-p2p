@@ -34,23 +34,19 @@ func server(cmd *cobra.Command, args []string) {
 		Port: port,
 	})
 	if err != nil {
-
 		log.Println(err)
 	}
 	log.Printf("local address: <%s> \n", listener.LocalAddr().String())
 	peers := make([]net.UDPAddr, 0, 2)
 	data := make([]byte, 1024)
 	for {
-
 		n, remoteAddr, err := listener.ReadFromUDP(data)
 		if err != nil {
-
 			log.Printf("err during read: %s\n", err)
 		}
 		log.Printf("<%s> %s\n", remoteAddr.String(), data[:n])
 		peers = append(peers, *remoteAddr)
 		if len(peers) == 2 {
-
 			log.Printf("Creating UDP tunnel...... pear: %s <--> %s \n", peers[0].String(), peers[1].String())
 			// writeToUDP send data through channel c.
 			// if timeout, it return an error, which is very rare

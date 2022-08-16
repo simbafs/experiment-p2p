@@ -66,16 +66,16 @@ func client(cmd *cobra.Command, args []string) {
 	conn.Close()
 	anotherPeer := parseAddr(string(data[:n]))
 	log.Printf("local:%s server:%s:%d another:%s:%d\n", srcAddr, remoteAddr.IP, remoteAddr.Port, anotherPeer.IP, anotherPeer.Port)
-	bidirectionHole(srcAddr, &anotherPeer)
+	bidirectionHole(srcAddr, anotherPeer)
 }
 
-func parseAddr(addr string) net.UDPAddr {
+func parseAddr(addr string) *net.UDPAddr {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
 		log.Fatalf("net.SplitHostPort: %s\n", err)
 	}
 	portInt, err := strconv.Atoi(port)
-	return net.UDPAddr{
+	return &net.UDPAddr{
 		IP:   net.ParseIP(host),
 		Port: portInt,
 	}
